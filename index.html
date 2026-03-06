@@ -137,6 +137,7 @@ width:100%;
 height:40px;
 margin-bottom:10px;
 text-align:right;
+font-size:18px;
 }
 
 /* NOTES */
@@ -196,27 +197,27 @@ margin:10px;
 <input id="display" disabled>
 
 <div>
-<button onclick="c('7')">7</button>
-<button onclick="c('8')">8</button>
-<button onclick="c('9')">9</button>
-<button onclick="c('/')">/</button>
+<button onclick="addCalc('7')">7</button>
+<button onclick="addCalc('8')">8</button>
+<button onclick="addCalc('9')">9</button>
+<button onclick="addCalc('/')">/</button>
 
-<button onclick="c('4')">4</button>
-<button onclick="c('5')">5</button>
-<button onclick="c('6')">6</button>
-<button onclick="c('*')">*</button>
+<button onclick="addCalc('4')">4</button>
+<button onclick="addCalc('5')">5</button>
+<button onclick="addCalc('6')">6</button>
+<button onclick="addCalc('*')">*</button>
 
-<button onclick="c('1')">1</button>
-<button onclick="c('2')">2</button>
-<button onclick="c('3')">3</button>
-<button onclick="c('-')">-</button>
+<button onclick="addCalc('1')">1</button>
+<button onclick="addCalc('2')">2</button>
+<button onclick="addCalc('3')">3</button>
+<button onclick="addCalc('-')">-</button>
 
-<button onclick="c('0')">0</button>
-<button onclick="c('.')">.</button>
-<button onclick="solve()">=</button>
-<button onclick="c('+')">+</button>
+<button onclick="addCalc('0')">0</button>
+<button onclick="addCalc('.')">.</button>
+<button onclick="solveCalc()">=</button>
+<button onclick="addCalc('+')">+</button>
 
-<button onclick="clr()">C</button>
+<button onclick="clearCalc()">C</button>
 </div>
 
 </div>
@@ -260,13 +261,23 @@ margin:10px;
 
 </div>
 
-<!-- MUSIC -->
+<!-- MUSIC PLAYER -->
 
 <div id="music" class="tool glass">
 
 <span class="close" onclick="toggle('music')">✕</span>
 
-<audio controls>
+<select id="songSelect" onchange="changeSong()">
+
+<option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">Song 1</option>
+<option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">Song 2</option>
+<option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3">Song 3</option>
+<option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3">Song 4</option>
+<option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3">Song 5</option>
+
+</select>
+
+<audio id="player" controls style="width:100%;margin-top:10px;">
 <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
 </audio>
 
@@ -328,11 +339,25 @@ document.onmouseup=()=>document.onmousemove=null
 
 })
 
-/* CALC */
+/* CALCULATOR */
 
-function c(v){display.value+=v}
-function clr(){display.value=""}
-function solve(){display.value=eval(display.value)}
+const display=document.getElementById("display")
+
+function addCalc(v){
+display.value+=v
+}
+
+function clearCalc(){
+display.value=""
+}
+
+function solveCalc(){
+try{
+display.value=eval(display.value)
+}catch{
+display.value="Error"
+}
+}
 
 /* STOPWATCH */
 
@@ -400,9 +425,16 @@ let notes=document.getElementById("notes")
 notes.value=localStorage.getItem("notes")||""
 
 notes.oninput=()=>{
-
 localStorage.setItem("notes",notes.value)
+}
 
+/* MUSIC CHANGE */
+
+function changeSong(){
+let player=document.getElementById("player")
+let song=document.getElementById("songSelect").value
+player.src=song
+player.play()
 }
 
 </script>
